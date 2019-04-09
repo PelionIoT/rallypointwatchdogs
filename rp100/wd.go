@@ -22,7 +22,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/WigWagCo/maestroSpecs"
+	"github.com/armPelionEdge/maestroSpecs"
 )
 
 const (

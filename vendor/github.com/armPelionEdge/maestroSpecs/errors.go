@@ -1,5 +1,5 @@
-package maestroSpecs 
-//
+package maestroSpecs
+
 // Copyright (c) 2018, Arm Limited and affiliates.
 // SPDX-License-Identifier: Apache-2.0
 //
@@ -14,15 +14,36 @@ package maestroSpecs
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
 import (
-    "github.com/WigWagCo/maestroSpecs/templates"    
+//	"errors"
 )
 
-type PlatformReader interface {
-    // implemented by a library which provides a way to pull off needed
-    // platform specific variables, typically out of NVRAM, secure flash or EEPROM
-    // use the Logger to log any errors or information
-    GetPlatformVars(dict *templates.TemplateVarDictionary, log Logger) (err error)     
+type Error interface {
+	GetHttpStatusCode() int
+	GetErrorString() string
+	GetDetail() string
 }
+
+type APIError struct {
+	HttpStatusCode int
+	ErrorString string
+	Detail string
+}
+
+func (err *APIError) Error() string {
+	return err.ErrorString + " -- " + err.Detail
+} 
+
+func (err *APIError) GetHttpStatusCode() int {
+	return err.HttpStatusCode
+}
+
+func (err *APIError) GetErrorString() string {
+	return err.ErrorString
+}
+
+func (err *APIError) GetDetail() string {
+	return err.Detail
+}
+

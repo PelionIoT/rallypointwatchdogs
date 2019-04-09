@@ -1,21 +1,21 @@
 {
-	"ImportPath": "github.com/WigWagCo/rallypointwatchdogs",
-	"GoVersion": "go1.9",
-	"GodepVersion": "v79",
+	"ImportPath": "github.com/armPelionEdge/rallypointwatchdogs",
+	"GoVersion": "go1.11",
+	"GodepVersion": "v80",
 	"Packages": [
 		"./..."
 	],
 	"Deps": [
 		{
-			"ImportPath": "github.com/WigWagCo/maestroSpecs",
-			"Rev": "7441c7a82f4a12a7690e78a7f3e6b58ee2f1fdb8"
+			"ImportPath": "github.com/armPelionEdge/maestroSpecs",
+			"Rev": "d888bcd38ad8473e5a71bb30809e264d67a4ddeb"
 		},
 		{
-			"ImportPath": "github.com/WigWagCo/maestroSpecs/templates",
-			"Rev": "7441c7a82f4a12a7690e78a7f3e6b58ee2f1fdb8"
+			"ImportPath": "github.com/armPelionEdge/maestroSpecs/templates",
+			"Rev": "d888bcd38ad8473e5a71bb30809e264d67a4ddeb"
 		},
 		{
-			"ImportPath": "github.com/WigWagCo/mustache",
+			"ImportPath": "github.com/armPelionEdge/mustache",
 			"Comment": "0.0.1-17-g6375acf",
 			"Rev": "6375acf62c69d9d3ad20fd0599d82ca94ea12284"
 		}

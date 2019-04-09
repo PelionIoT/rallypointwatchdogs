@@ -1,5 +1,5 @@
 package maestroSpecs
-//
+
 // Copyright (c) 2018, Arm Limited and affiliates.
 // SPDX-License-Identifier: Apache-2.0
 //
@@ -14,37 +14,20 @@ package maestroSpecs
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
-import (
-//	"errors"
-)
-
-type Error interface {
-	GetHttpStatusCode() int
-	GetErrorString() string
-	GetDetail() string
-}
-
-type APIError struct {
-	HttpStatusCode int
-	ErrorString string
-	Detail string
-}
-
-func (err *APIError) Error() string {
-	return err.ErrorString + " -- " + err.Detail
-} 
-
-func (err *APIError) GetHttpStatusCode() int {
-	return err.HttpStatusCode
-}
-
-func (err *APIError) GetErrorString() string {
-	return err.ErrorString
-}
-
-func (err *APIError) GetDetail() string {
-	return err.Detail
+// A Logger interface is passed to some Maestro plugins, allowing the 
+// plugin to Log to Maestro's internal logs, as part of the Maestro
+// process.
+type Logger interface {
+    Info(a ...interface{})
+    Infof(format string, a ...interface{})
+    Success(a ...interface{})
+    Successf(format string, a ...interface{})
+    Warn(a ...interface{})
+    Warnf(format string, a ...interface{})
+    Error(a ...interface{})
+    Errorf(format string, a ...interface{})
+    Debug(a ...interface{})
+    Debugf(format string, a ...interface{})
 }
 

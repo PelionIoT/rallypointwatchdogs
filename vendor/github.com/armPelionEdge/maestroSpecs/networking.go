@@ -1,5 +1,5 @@
 package maestroSpecs
-//
+
 // Copyright (c) 2018, Arm Limited and affiliates.
 // SPDX-License-Identifier: Apache-2.0
 //
@@ -14,7 +14,6 @@ package maestroSpecs
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
 //    "encoding/json"
 
@@ -34,6 +33,11 @@ type AliasAddressV4 struct {
 	// IPv4 Broadcast Addr. If empty, set automatically
 	IPv4BCast string `yaml:"ipv4_bcast" json:"ipv4_bcast"`
 }
+
+const (
+	// MaxRoutePriority is largest number which can be used for RoutePriority setting
+	MaxRoutePriority = 9
+)
 
 type NetIfConfigPayload struct {
 	// like "eth0"
@@ -78,15 +82,21 @@ type NetIfConfigPayload struct {
 	// if true, the interface should be configured, be turned off / disabled (rare)
 	Down bool `yaml:"down" json:"down"`
 
-	// A default route. If empty, none will be setup
+	// DefaultGateway is a default route associated with this interface, which should be set if this
+	// interface is up. If empty, none will be setup - unless DHCP provides one. If one is provided
+	// here it will override the DHCP provided one. The Priority field
+	// should help determine which route has the best metric, which will allow the kernel
+	// to use the fastest route.
 	DefaultGateway string `yaml:"default_gateway" json:"default_gateway"`
 
 	// NOT IMPLEMENTED
 	FallbackDefaultGateway string `yaml:"fallback_default_gateway" json:"fallback_default_gateway"`
 
-	// Priority. Priority 0 - means the first, primary interface, 1 would mean
-	// the secondary, etc.
-	Priority int `yaml:"priority" json:"priority"`
+	// RoutePriority. Priority 0 - means the first, primary interface, 1 would mean
+	// the secondary, etc. Priority is used to decide which physical interface should
+	// be the default route, if such interface has a default GW
+	// valid values: 0-9 (MaxRoutePriority)
+	RoutePriority int `yaml:"route_priority" json:"route_priority"`
 
 	// An Aux interface, is not considered in the line up of outbound interfaces
 	// It usually routes to an internal only network
@@ -121,6 +131,10 @@ type NetIfConfigPayload struct {
 	// before Maestro started.
 	DhcpDisableClearAddresses bool `yaml:"dhcp_disable_clear_addresses" json:"dhcp_disable_clear_addresses"`
 
+	// DhcpStepTimeout is the maximum amount of seconds to wait in each step
+	// of getting a DHCP address. If not set, a sane default will be used.
+	DhcpStepTimeout int `yaml:"dhcp_step_timeout" json:"dhcp_step_timeout"`
+
 	// For use typically in the config file, not required. For incoming API calls,
 	// the default behavior is "override", b/c the API calls always modify the
 	// interface's database entry.
@@ -139,6 +153,12 @@ type NetworkConfigPayload struct {
 	// an array of network interfaces to configure
 	Interfaces []*NetIfConfigPayload `yaml:"interfaces" json:"interfaces"`
 
+	// DontOverrideDefaultRoute when true means maestro will not
+	// replace the default route, if one exists, with a setting from the interface
+	// whether via DHCP or static. If a route is not in place, or the route was set by
+	// maestro, it will replace this route.
+	DontOverrideDefaultRoute bool `yaml:"dont_override_default_route" json:"dont_override_default_route"`
+
 	Nameservers []string `yaml:"nameservers" json:"nameservers"`
 
 	// this tells network subsystem to ignore DHCP offers which have
@@ -146,10 +166,15 @@ type NetworkConfigPayload struct {
 	// DNS will be ignored
 	DnsIgnoreDhcp bool `yaml:"dns_ignore_dhcp" json:"dns_ignore_dhcp"`
 
+	// AltResolvConf, if populated with a string, will cause the network subsystem to
+	// not write /etc/resolv.conf, and instead write what would go to /etc/resolv.conf to
+	// an alternate file.
+	AltResolvConf string `yaml:"alt_resolv_conf" json:"alt_resolve_conf"`
+
 	// if any of the below are true, then Nameserver shoul be set to
 	// 127.0.0.1
 
-	// If true, a local caching nameserver will be used.
+	// DnsRunLocalCaching if true, a local caching nameserver will be used.
 	DnsRunLocalCaching bool `yaml:"dns_local_caching" json:"dns_local_caching"`
 
 	// True if the gateway should forward all DNS requests to a
@@ -174,7 +199,7 @@ type NetworkConfigPayload struct {
 	// interface's database entry.
 	// existing: "override"  # this will replace any data already set in the database
 	// existing: ""          # this is the default. The database will take precedence, if it has an entry for the interface
-	// existing: "replace"   # this will remove the existing datavase entry entirely. And then take whatever
+	// existing: "replace"   # this will remove the existing database entry entirely. And then take whatever
 	//                       # the config file has to offer
 	Existing string `yaml:"existing" json:"existing"`
 }

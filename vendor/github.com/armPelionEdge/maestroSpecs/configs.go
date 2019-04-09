@@ -1,5 +1,5 @@
 package maestroSpecs
-//
+
 // Copyright (c) 2018, Arm Limited and affiliates.
 // SPDX-License-Identifier: Apache-2.0
 //
@@ -14,7 +14,6 @@ package maestroSpecs
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
 type ConfigFileData interface {
 	GetURL() string

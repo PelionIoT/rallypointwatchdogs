@@ -18,7 +18,7 @@ package main
 import (
 	"time"
 
-	"github.com/WigWagCo/maestroSpecs"
+	"github.com/armPelionEdge/maestroSpecs"
 )
 
 const (

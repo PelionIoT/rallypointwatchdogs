@@ -26,7 +26,7 @@ SELF="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 cd $SELF
 
-godep save ./... "$@"
+$GOPATH/bin/godep save ./... "$@"
 # if [ -d src ]; then
 # 	mv src .src
 # 	godep save ./... "$@"
@@ -37,7 +37,7 @@ godep save ./... "$@"
 # it - for instance - arbitrarily drops certain folder, for instance a 
 # folder with no Go code, but with C dependencies. Hmm.
 
-# rm -rf vendor/github.com/WigWagCo/greasego/deps
-# cp -a ../greasego/deps vendor/github.com/WigWagCo/greasego
-# cp -a ../greasego/src vendor/github.com/WigWagCo/greasego
+# rm -rf vendor/github.com/armPelionEdge/greasego/deps
+# cp -a ../greasego/deps vendor/github.com/armPelionEdge/greasego
+# cp -a ../greasego/src vendor/github.com/armPelionEdge/greasego
 # cd -

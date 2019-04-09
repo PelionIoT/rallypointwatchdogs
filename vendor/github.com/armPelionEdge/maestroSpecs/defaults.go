@@ -1,5 +1,5 @@
-package maestroSpecs
-//
+package maestroSpecs;
+
 // Copyright (c) 2018, Arm Limited and affiliates.
 // SPDX-License-Identifier: Apache-2.0
 //
@@ -14,22 +14,13 @@ package maestroSpecs
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
+const DefaultUnixLogSocketSink = "/tmp/grease.sock"
 
-// A Logger interface is passed to some Maestro plugins, allowing the 
-// plugin to Log to Maestro's internal logs, as part of the Maestro
-// process.
-type Logger interface {
-    Info(a ...interface{})
-    Infof(format string, a ...interface{})
-    Success(a ...interface{})
-    Successf(format string, a ...interface{})
-    Warn(a ...interface{})
-    Warnf(format string, a ...interface{})
-    Error(a ...interface{})
-    Errorf(format string, a ...interface{})
-    Debug(a ...interface{})
-    Debugf(format string, a ...interface{})
-}
+const NUMBER_BANKS_WEBLOG = uint32(20)
 
+const MAX_QUEUED_PROCESS_EVENTS = 100
+
+const DEFAULT_STATS_INTERVAL = 300
+
+const MAX_TASK_LIFE = 60*60*24*7 // 1 week in seconds
